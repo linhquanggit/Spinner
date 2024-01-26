@@ -31,7 +31,7 @@ namespace Spinner
         // Update is called once per frame
         void FixedUpdate()
         {
-
+           
             if (transform.IsChildOf(spinner.transform))
             {
                 if (dragging && !hasDragged)
@@ -47,20 +47,25 @@ namespace Spinner
 
             if (playAudio)
             {
-                source.clip = sfxClip;
-                source.loop = true;
-                source.Play();
+                PlaySpinSFX();
             }
-            else
+            if (tempSpeed == 0f)
             {
                 source.Stop();
             }
         }
 
+        private void PlaySpinSFX()
+        {
+            source.clip = sfxClip;
+            source.loop = true;
+            source.Play();
+        }
         private void Spin()
         {
             Vector3 mouseDelta = lastMousePos - firstMousePos;
-            //multiplySpeed = mouseDelta.magnitude / Time.deltaTime;
+
+            //check mouseDelta.x value to decision to spin 
             if (mouseDelta.x > 1f)
             {
                 transform.parent.Rotate(0, 0, tempSpeed * Time.deltaTime);
@@ -73,11 +78,16 @@ namespace Spinner
         }
         private void FollowMouse()
         {
+            // calculate angle between mouse and spinner
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = -0.1f;
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
             float angle = Mathf.Atan2(mouseWorldPos.y - transform.parent.position.y, mouseWorldPos.x - transform.parent.position.x) * Mathf.Rad2Deg;
+
+            //rotate spinner with angle above but not spin
             transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+
             playAudio = false;
 
         }
@@ -88,19 +98,25 @@ namespace Spinner
         }
         private void OnMouseDown()
         {
+            //get first mouse position when mouse button down to calculate mouseDelta.x value to decision spin or not(68)
             firstMousePos = Input.mousePosition;
+
             dragging = false;
-            if(hasDragged)
+
+            //check if is dragging and mouse button down again , stop spin and spin sfx
+            if (hasDragged)
             {
                 hasDragged = false;
                 tempSpeed = 0f;
                 playAudio = false;
-            }    
+            }
         }
         private void OnMouseUp()
         {
             hasDragged = true;
             dragging = false;
+
+            //get mouse button position when mouse up to calculate mouseDelta.x value to decision spin or not(68)
             lastMousePos = Input.mousePosition;
             Vector3 mouseDelta = lastMousePos - firstMousePos;
             if (mouseDelta.x > 1f || mouseDelta.x < -1f)
@@ -108,12 +124,12 @@ namespace Spinner
                 tempSpeed = spinSpeed;
                 playAudio = true;
 
-            }    
+            }
             else
             {
                 tempSpeed = 0f;
                 playAudio = false;
-            }    
+            }
         }
 
     }

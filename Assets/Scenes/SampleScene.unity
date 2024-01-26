@@ -272,7 +272,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67594188917fec4cb5750b23cd1f6b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 1000
+  spinSpeed: 100
   tempSpeed: 0
   source: {fileID: 6909801979167926652}
   sfxClip: {fileID: 8300000, guid: a3a34085e83781f408644349c0ecaa33, type: 3}
