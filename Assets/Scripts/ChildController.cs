@@ -15,6 +15,8 @@ namespace Spinner
         private SpinController spinner;
         private bool dragging;
         private bool hasDragged;
+
+
         private Vector3 lastMousePos;
         private Vector3 firstMousePos;
 
@@ -73,8 +75,7 @@ namespace Spinner
             else if (mouseDelta.x < -1f)
             {
                 transform.parent.Rotate(0, 0, -tempSpeed * Time.deltaTime);
-            }
-            playAudio = true;
+            } 
         }
         private void FollowMouse()
         {
@@ -86,7 +87,6 @@ namespace Spinner
 
             //rotate spinner with angle above but not spin
             transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
 
             playAudio = false;
 
@@ -102,7 +102,6 @@ namespace Spinner
             firstMousePos = Input.mousePosition;
 
             dragging = false;
-
             //check if is dragging and mouse button down again , stop spin and spin sfx
             if (hasDragged)
             {
@@ -110,6 +109,8 @@ namespace Spinner
                 tempSpeed = 0f;
                 playAudio = false;
             }
+
+
         }
         private void OnMouseUp()
         {
@@ -119,18 +120,19 @@ namespace Spinner
             //get mouse button position when mouse up to calculate mouseDelta.x value to decision spin or not(68)
             lastMousePos = Input.mousePosition;
             Vector3 mouseDelta = lastMousePos - firstMousePos;
-            if (mouseDelta.x > 1f || mouseDelta.x < -1f)
+            if (Mathf.Abs(mouseDelta.x) > 1f)
             {
                 tempSpeed = spinSpeed;
                 playAudio = true;
-
             }
             else
             {
                 tempSpeed = 0f;
                 playAudio = false;
+                
             }
         }
 
     }
 }
+
