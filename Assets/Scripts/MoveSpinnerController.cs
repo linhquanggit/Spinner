@@ -7,9 +7,10 @@ namespace Spinner
     public class MoveSpinnerController : MonoBehaviour
     {
         private float distance;
+        private bool movingParent;
         void OnMouseDrag()
         {
-
+            movingParent = true;
             //get mouse position and convert to world point
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,distance);
             Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -28,13 +29,19 @@ namespace Spinner
             transform.position = objPosition;
         }
 
-
-
-
         private void OnMouseDown()
         {
+            movingParent = true;
             //get mouse button down (z) value and set to distance
             distance = Camera.main.WorldToScreenPoint(transform.position).z;
+        }
+        private void OnMouseUp()
+        {
+            movingParent = false;
+        }
+        public bool IsMovingParent()
+        {
+            return movingParent;
         }
 
     }
